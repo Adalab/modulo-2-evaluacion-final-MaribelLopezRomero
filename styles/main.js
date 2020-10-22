@@ -22,7 +22,8 @@ function getData() {
 
 function paintFlims() {
   let ulHtml  = '';
-  for (const movie of movies) {
+  for (let i = 0; i < movies.length; i++) {
+    const movie = movies[i];
     const showFilm = movie.show;
     console.log(showFilm);
     ulHtml += `<li>`;
@@ -32,6 +33,7 @@ function paintFlims() {
     ulHtml += `</div>`
     ulHtml += `</li>`
   }
+  
   listFilm.innerHTML = ulHtml;
 }
 
