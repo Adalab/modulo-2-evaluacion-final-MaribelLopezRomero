@@ -1,0 +1,9 @@
+.main{
+display :flex;
+flex-direction: row;
+justify-content: space-between;
+}
+.background_title_color {
+    background-color: red;
+    color: white
+}
