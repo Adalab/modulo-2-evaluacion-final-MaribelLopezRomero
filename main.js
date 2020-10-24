@@ -3,6 +3,7 @@ const input = document.querySelector('.js-input');
 const button = document.querySelector('.js-button');
 const listFilm = document.querySelector('.js-listFilm');
 const film = input.value; //la defino fuera para poder usarla en mas de una funcion
+const listfavoritesfilm = document.querySelector ('.js-listFavorites')
 let movies = [];
 let favoriteFilm = [];
 
@@ -15,6 +16,8 @@ function getData() {
       movies = filmData; //guardo fuera de la funcion el array de objetos
       paintFlims();
       listentListFilms();
+      // paintFavorite ()
+      
     });
 }
 
@@ -25,8 +28,16 @@ function paintFlims() {
   for (let i = 0; i < movies.length; i++) {
     const movie = movies[i];
     const showFilm = movie.show;
-    console.log(showFilm);
-    ulHtml += `<li class ="background_title_color js_film_item" id = '${i}'>`;
+    //Añadir clase para favorito
+    let classF;
+    const favoriteIndex = favoriteFilm.indexOf(movies[i].show.id);
+    const favorite = favoriteIndex !== -1;
+    if (favorite === true){
+      classF = 'background_title_color'
+    } else {classF= ''}
+    //Añadir clase para favorito
+
+    ulHtml += `<li class ="${classF} js_film_item" id = '${movies[i].show.id}}'>`;
     ulHtml += `<h2>${showFilm.name}</h2>`;
     ulHtml += `<div>`;
     ulHtml += `<img src="${showFilm.image.medium}" alt="imagen ${film}">`;
@@ -40,7 +51,11 @@ function paintFlims() {
   }
 
   listFilm.innerHTML = ulHtml;
+
 }
+
+
+
 
 // metemos la funcion get data en la funcion search movie, para que cuando le demos al boton llame a la funcion get data, que esa a su vez llama a la funcion paintfilms
 
@@ -76,17 +91,42 @@ function favoriteListFilm(ev) {
     favoriteFilm.push(clicked);
   } else {
     console.log('lo quito');
-    favoriteFilm.splice(indexFav,1);
+    favoriteFilm.splice(indexFav, 1);
   }
   console.log(favoriteFilm);
 
-  
-  // paintFlims();
-  // listentListFilms();
+  // paintFavorite ();
+  paintFlims();
+  listentListFilms();
 }
 
 
-// una funcion del que escucha el evento, donde: se recoge la lista de peliculas (no la podemos poner fuera porque no existe al arrancar la pagina), y el evento). Esta funcion la ponemos en getData
+// function paintFavorite () {
+//   const listfavoritesfilm = document.querySelector ('.js-listFavorites')
+
+//   let ulhtmlFavorite = "";
+  
+//   for (let i = 0; i< favoriteFilm.length; i++) {
+//     const itemFavorite = favoriteFilm[i];
+//     console.log(itemFavorite);
+//     console.log (favoriteFilm);
+//     ulhtmlFavorite += `<li class ="js_film_item" id = '${i}'>`;
+//     ulhtmlFavorite += `<h2>${itemFavorite.show.name}</h2>`;
+//     ulhtmlFavorite += `<div>`;
+//     ulhtmlFavorite += `<img src="${itemFavorite.show.image.medium}" alt="imagen ${film}">`;
+//     // ulHtml += `<img`
+//     // if (itemFavorite.show.image === null) {
+//     //src=`"https://placeholder.com" `
+//     // } else {src=`"${itemFavorite.show.image.medium}"}`
+//     // `alt="imagen ${film}">`
+//     ulhtmlFavorite += `</div>`;
+//     ulhtmlFavorite += `</li>`;
+//   }
+  
+//   listfavoritesfilm.innerHTML = ulhtmlFavorite;
+//   }
+
+  // una funcion del que escucha el evento, donde: se recoge la lista de peliculas (no la podemos poner fuera porque no existe al arrancar la pagina), y el evento). Esta funcion la ponemos en getData
 
 function listentListFilms() {
   const listFilm = document.querySelectorAll('.js_film_item');
