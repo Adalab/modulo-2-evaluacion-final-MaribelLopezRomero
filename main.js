@@ -112,7 +112,7 @@ function paintFavorite () {
     const itemFavorite = favoriteFilm[i];
     console.log(itemFavorite);
     console.log (favoriteFilm);
-    ulhtmlFavorite += `<li class ="js_film_item" id = '${i}'>`;
+    ulhtmlFavorite += `<li id = '${favoriteFilm[i].show.id}'>`;
     ulhtmlFavorite += `<h2>${itemFavorite.show.name}</h2>`;
     ulhtmlFavorite += `<div>`;
     if (showFilm.image!== null) {
@@ -137,20 +137,21 @@ function listentListFilms() {
   }
 }
 
-function setLocalStorage (){
-  localStorage.setItem ("FavoritesFilm", JSON.stringify(favoriteFilm));
-}
-//cuando esta vacio el localstorage hacer la peticion al servidor y si no esta vacio se la hacemos al local
+//Local Storage
 
-function getLocalStorage () {
-  const localFavoriteFilm = localStorage.getItem ("FavoriteFilm")
-  const localFavoriteFilmJ = JSON.parse (localFavoriteFilm);
-  if (localFavoriteFilmJ === null) {
-    getData()
-} else {
-  favoriteFilm = localFavoriteFilmJ;
-  paintFlims();
-  listentListFilms ();
-}
+// function setLocalStorage (){
+//   localStorage.setItem ("FavoritesFilm", JSON.stringify(favoriteFilm));
+// }
+// //cuando esta vacio el localstorage hacer la peticion al servidor y si no esta vacio se la hacemos al local
 
-getData();
+// function getLocalStorage () {
+//   const localFavoriteFilm = localStorage.getItem ("FavoriteFilm")
+//   const localFavoriteFilmJ = JSON.parse (localFavoriteFilm);
+//   if (localFavoriteFilmJ === null) {
+//     getData()
+// } else {
+//   favoriteFilm = localFavoriteFilmJ;
+//   paintFlims();
+//   listentListFilms ();
+// }
+// getData ();
