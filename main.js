@@ -2,6 +2,7 @@
 const input = document.querySelector('.js-input');
 const button = document.querySelector('.js-button');
 const listFilm = document.querySelector('.js-listFilm');
+const imgPlaceholder = "https://via.placeholder.com/210x295/ffffff/666666/?text=TV";
 const film = input.value; //la defino fuera para poder usarla en mas de una funcion
 const listfavoritesfilm = document.querySelector ('.js-listFavorites')
 let movies = [];
@@ -16,7 +17,8 @@ function getData() {
       movies = filmData; //guardo fuera de la funcion el array de objetos
       paintFlims();
       listentListFilms();
-      // paintFavorite ()
+      paintFavorite ();
+      setLocalStorage ();
       
     });
 }
@@ -40,12 +42,11 @@ function paintFlims() {
     ulHtml += `<li class ="${classF} js_film_item" id = '${movies[i].show.id}}'>`;
     ulHtml += `<h2>${showFilm.name}</h2>`;
     ulHtml += `<div>`;
-    ulHtml += `<img src="${showFilm.image.medium}" alt="imagen ${film}">`;
-    // ulHtml += `<img`
-    // if (showFilm.image === undefined) {
-    //     src=`"https://placeholder.com" `
-    // } else {src=`"${showFilm.image.medium}" `}
-    // `alt="imagen ${film}">`
+    if (showFilm.image!== null) {
+      ulHtml += `<img src="${showFilm.image.medium}" alt="${film}" />`;
+    } else {
+      ulHtml += `<img src="${imgPlaceholder}" alt="${film}" />`;
+    }
     ulHtml += `</div>`;
     ulHtml += `</li>`;
   }
@@ -95,36 +96,36 @@ function favoriteListFilm(ev) {
   }
   console.log(favoriteFilm);
 
-  // paintFavorite ();
+ 
   paintFlims();
   listentListFilms();
+  paintFavorite ();
 }
 
 
-// function paintFavorite () {
-//   const listfavoritesfilm = document.querySelector ('.js-listFavorites')
+function paintFavorite () {
+  const listfavoritesfilm = document.querySelector ('.js-listFavorites')
 
-//   let ulhtmlFavorite = "";
+  let ulhtmlFavorite = "";
   
-//   for (let i = 0; i< favoriteFilm.length; i++) {
-//     const itemFavorite = favoriteFilm[i];
-//     console.log(itemFavorite);
-//     console.log (favoriteFilm);
-//     ulhtmlFavorite += `<li class ="js_film_item" id = '${i}'>`;
-//     ulhtmlFavorite += `<h2>${itemFavorite.show.name}</h2>`;
-//     ulhtmlFavorite += `<div>`;
-//     ulhtmlFavorite += `<img src="${itemFavorite.show.image.medium}" alt="imagen ${film}">`;
-//     // ulHtml += `<img`
-//     // if (itemFavorite.show.image === null) {
-//     //src=`"https://placeholder.com" `
-//     // } else {src=`"${itemFavorite.show.image.medium}"}`
-//     // `alt="imagen ${film}">`
-//     ulhtmlFavorite += `</div>`;
-//     ulhtmlFavorite += `</li>`;
-//   }
+  for (let i = 0; i< favoriteFilm.length; i++) {
+    const itemFavorite = favoriteFilm[i];
+    console.log(itemFavorite);
+    console.log (favoriteFilm);
+    ulhtmlFavorite += `<li class ="js_film_item" id = '${i}'>`;
+    ulhtmlFavorite += `<h2>${itemFavorite.show.name}</h2>`;
+    ulhtmlFavorite += `<div>`;
+    if (showFilm.image!== null) {
+      ulhtmlFavorite += `<img src="${itemFavorite.show.image.medium}" alt="${film}" />`;
+    } else {
+      ulhtmlFavorite += `<img src="${imgPlaceholder}" alt="${film}" />`;
+    }
+    ulhtmlFavorite += `</div>`;
+    ulhtmlFavorite += `</li>`;
+  }
   
-//   listfavoritesfilm.innerHTML = ulhtmlFavorite;
-//   }
+  listfavoritesfilm.innerHTML = ulhtmlFavorite;
+  }
 
   // una funcion del que escucha el evento, donde: se recoge la lista de peliculas (no la podemos poner fuera porque no existe al arrancar la pagina), y el evento). Esta funcion la ponemos en getData
 
@@ -135,3 +136,21 @@ function listentListFilms() {
     itemFilm.addEventListener('click', favoriteListFilm);
   }
 }
+
+function setLocalStorage (){
+  localStorage.setItem ("FavoritesFilm", JSON.stringify(favoriteFilm));
+}
+//cuando esta vacio el localstorage hacer la peticion al servidor y si no esta vacio se la hacemos al local
+
+function getLocalStorage () {
+  const localFavoriteFilm = localStorage.getItem ("FavoriteFilm")
+  const localFavoriteFilmJ = JSON.parse (localFavoriteFilm);
+  if (localFavoriteFilmJ === null) {
+    getData()
+} else {
+  favoriteFilm = localFavoriteFilmJ;
+  paintFlims();
+  listentListFilms ();
+}
+
+getData();
