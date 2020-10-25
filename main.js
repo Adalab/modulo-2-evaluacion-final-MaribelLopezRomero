@@ -11,7 +11,7 @@ let favoriteFilm = [];
 
 function getData() {
   const film = input.value; //si la quito aqui no me funciona
-  fetch(`http://api.tvmaze.com/search/shows?q=${film}`)
+  fetch(`//api.tvmaze.com/search/shows?q=${film}`)
     .then((filmResponse) => filmResponse.json())
     .then((filmData) => {
       //   console.log(filmData);
