@@ -17,8 +17,8 @@ function getData() {
       movies = filmData; //guardo fuera de la funcion el array de objetos
       paintFlims();
       listentListFilms();
-      paintFavorite ();
-      setLocalStorage ();
+      // paintFavorite ();
+      // setLocalStorage ();
       
     });
 }
@@ -32,14 +32,14 @@ function paintFlims() {
     const showFilm = movie.show;
     //Añadir clase para favorito
     let classF;
-    const favoriteIndex = favoriteFilm.indexOf(movies[i].show.id);
+    const favoriteIndex = favoriteFilm.indexOf(i); //AQUI ME BUSCA EL ID PERO QUIERO QUE ME BUSQUE EL OBJETO
     const favorite = favoriteIndex !== -1;
-    if (favorite === true){
+    if (favorite === false){
       classF = 'background_title_color'
     } else {classF= ''}
     //Añadir clase para favorito
 
-    ulHtml += `<li class ="${classF} js_film_item" id = '${movies[i].show.id}}'>`;
+    ulHtml += `<li class ="${classF} js_film_item" id = '${i}}'>`;
     ulHtml += `<h2>${showFilm.name}</h2>`;
     ulHtml += `<div>`;
     if (showFilm.image!== null) {
@@ -70,6 +70,7 @@ button.addEventListener('click', searchFilms);
 
 function favoriteListFilm(ev) {
   const clicked = parseInt(ev.currentTarget.id);
+  const indexFav = favoriteFilm.indexOf(movies[clicked]);
 
   // const isFavorite = favoriteFilm.indexOf(clicked);
   // console.log(isFavorite);
@@ -83,13 +84,13 @@ function favoriteListFilm(ev) {
   // }
   // console.log(favoriteFilm);
 
-  const indexFav = favoriteFilm.indexOf(clicked);
+  // const indexFav = favoriteFilm.indexOf(clicked);
   const isFavorite = indexFav !== -1;
   console.log(isFavorite);
 
   if (isFavorite === false) {
     console.log('lo meto');
-    favoriteFilm.push(clicked);
+    favoriteFilm.push(movies[clicked]); //AQUI QUIERO QUE ME META EL OBJETO. NO EL ID!!!
   } else {
     console.log('lo quito');
     favoriteFilm.splice(indexFav, 1);
@@ -99,33 +100,33 @@ function favoriteListFilm(ev) {
  
   paintFlims();
   listentListFilms();
-  paintFavorite ();
+  // paintFavorite ();
 }
 
 
-function paintFavorite () {
-  const listfavoritesfilm = document.querySelector ('.js-listFavorites')
+// function paintFavorite () {
+//   const listfavoritesfilm = document.querySelector ('.js-listFavorites')
 
-  let ulhtmlFavorite = "";
+//   let ulhtmlFavorite = "";
   
-  for (let i = 0; i< favoriteFilm.length; i++) {
-    const itemFavorite = favoriteFilm[i];
-    console.log(itemFavorite);
-    console.log (favoriteFilm);
-    ulhtmlFavorite += `<li id = '${favoriteFilm[i].show.id}'>`;
-    ulhtmlFavorite += `<h2>${itemFavorite.show.name}</h2>`;
-    ulhtmlFavorite += `<div>`;
-    if (showFilm.image!== null) {
-      ulhtmlFavorite += `<img src="${itemFavorite.show.image.medium}" alt="${film}" />`;
-    } else {
-      ulhtmlFavorite += `<img src="${imgPlaceholder}" alt="${film}" />`;
-    }
-    ulhtmlFavorite += `</div>`;
-    ulhtmlFavorite += `</li>`;
-  }
+//   for (let i = 0; i< favoriteFilm.length; i++) {
+//     const itemFavorite = favoriteFilm[i];
+//     console.log(itemFavorite);
+//     console.log (favoriteFilm);
+//     ulhtmlFavorite += `<li id = '${favoriteFilm[i].show.id}'>`;
+//     ulhtmlFavorite += `<h2>${itemFavorite.show.name}</h2>`;
+//     ulhtmlFavorite += `<div>`;
+//     if (showFilm.image!== null) {
+//       ulhtmlFavorite += `<img src="${itemFavorite.show.image.medium}" alt="${film}" />`;
+//     } else {
+//       ulhtmlFavorite += `<img src="${imgPlaceholder}" alt="${film}" />`;
+//     }
+//     ulhtmlFavorite += `</div>`;
+//     ulhtmlFavorite += `</li>`;
+//   }
   
-  listfavoritesfilm.innerHTML = ulhtmlFavorite;
-  }
+//   listfavoritesfilm.innerHTML = ulhtmlFavorite;
+//   }
 
   // una funcion del que escucha el evento, donde: se recoge la lista de peliculas (no la podemos poner fuera porque no existe al arrancar la pagina), y el evento). Esta funcion la ponemos en getData
 
