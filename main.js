@@ -10,7 +10,7 @@ let movies = [];
 let favoriteFilm = [];
 
 function getData() {
-  const film = input.value; //si la quito aqui no me funciona
+  const film = input.value;
   fetch(`//api.tvmaze.com/search/shows?q=${film}`)
     .then((filmResponse) => filmResponse.json())
     .then((filmData) => {
@@ -19,7 +19,6 @@ function getData() {
       listentListFilms();
     });
 }
-
 
 function searchFilms() {
   getData(film);
@@ -77,23 +76,21 @@ function listentListFilms() {
 
 function favoriteListFilm(ev) {
   const clicked = parseInt(ev.currentTarget.id);
-  const indexFav = favoriteFilm.indexOf(movies[clicked]);
+  const indexFav = favoriteFilm.findIndex(
+    (fav) => fav.show.id === movies[clicked].show.id
+  );
   const isFavorite = indexFav !== -1;
   console.log(isFavorite);
 
   if (isFavorite === false) {
-    console.log('lo meto');
     favoriteFilm.push(movies[clicked]);
   } else {
-    console.log('lo quito');
     favoriteFilm.splice(indexFav, 1);
   }
-  console.log(favoriteFilm);
-
   paintFlims();
   listentListFilms();
 }
-
+//Funcion que pinta la lista de favoritos
 function paintFavorite() {
   const listfavoritesfilm = document.querySelector('.js-listFavorites');
   let ulhtmlFavorite = '';
