@@ -14,15 +14,19 @@ function getData() {
   fetch(`//api.tvmaze.com/search/shows?q=${film}`)
     .then((filmResponse) => filmResponse.json())
     .then((filmData) => {
-      //   console.log(filmData);
-      movies = filmData; //guardo fuera de la funcion el array de objetos
+      movies = filmData;
       paintFlims();
       listentListFilms();
     });
 }
-getLocalStorage();
 
-//Funcion que pinte los datos, que la llamo desde la funcion que pide los datos al servidor.
+
+function searchFilms() {
+  getData(film);
+}
+button.addEventListener('click', searchFilms);
+
+//Funcion que pinte los datos al buscar.
 
 function paintFlims() {
   let ulHtml = '';
@@ -39,12 +43,6 @@ function paintFlims() {
     } else {
       classF = '';
     }
-    console.log (favoriteIndex)
-    // if (favoriteFilm.length > 0 === true) {
-    //   classF = 'background_title_color';
-    // } else {
-    //   classF = '';
-    // }
     //DOM
     ulHtml += `<li class = "${classF} js_film_item" id = '${i}}'>`;
     ulHtml += `<h2>${showFilm.name}</h2>`;
@@ -61,14 +59,21 @@ function paintFlims() {
   listFilm.innerHTML = ulHtml;
 }
 
-// metemos la funcion get data en la funcion search movie, para que cuando le demos al boton llame a la funcion get data, que esa a su vez llama a la funcion paintfilms
-
-function searchFilms() {
-  getData(film);
-}
-button.addEventListener('click', searchFilms);
-
 //FAVORITOS
+
+// Funcion del que escucha el evento sobre cada li que se genera al hacer la busqueda.
+
+function listentListFilms() {
+  const listFilm = document.querySelectorAll('.js_film_item');
+
+  for (const itemFilm of listFilm) {
+    itemFilm.addEventListener('click', favoriteListFilm);
+  }
+  paintFavorite();
+  setLocalStorage();
+}
+
+// Funcion manejadora del evento.
 
 function favoriteListFilm(ev) {
   const clicked = parseInt(ev.currentTarget.id);
@@ -110,27 +115,13 @@ function paintFavorite() {
   listfavoritesfilm.innerHTML = ulhtmlFavorite;
 }
 
-// una funcion del que escucha el evento, donde: se recoge la lista de peliculas (no la podemos poner fuera porque no existe al arrancar la pagina), y el evento). Esta funcion la ponemos en getData
-
-function listentListFilms() {
-  const listFilm = document.querySelectorAll('.js_film_item');
-
-  for (const itemFilm of listFilm) {
-    itemFilm.addEventListener('click', favoriteListFilm);
-  }
-  paintFavorite();
-  setLocalStorage();
-}
-
 //Local Storage
 
 function setLocalStorage() {
   localStorage.setItem('FavoritesFilm', JSON.stringify(favoriteFilm));
 }
-//cuando esta vacio el localstorage hacer la peticion al servidor y si no esta vacio se la hacemos al local
-
 function getLocalStorage() {
-  const localFavoriteFilm = localStorage.getItem('FavoriteFilm');
+  const localFavoriteFilm = localStorage.getItem('FavoritesFilm');
   const localFavoriteFilmJ = JSON.parse(localFavoriteFilm);
   if (localFavoriteFilmJ === null) {
     getData();
